@@ -1,0 +1,51 @@
+{
+  "title": "Tribunal do Amor",
+  "voteSeconds": 40,
+  "questions": [
+    {
+      "text": "Como o casal deve administrar o dinheiro?",
+      "options": [
+        "Quem ganha mais deve decidir",
+        "Cada um cuida do próprio dinheiro e divide as despesas",
+        "Os dois planejam juntos e mantêm uma parte para gastos individuais",
+        "Todo o dinheiro deve ser compartilhado"
+      ]
+    },
+    {
+      "text": "Qual é a melhor forma de educar os filhos?",
+      "options": [
+        "Os pais decidem, e os filhos obedecem",
+        "Os filhos precisam de liberdade para aprender com os erros",
+        "Os limites devem acompanhar a idade e a responsabilidade",
+        "Proibir demais prejudica a confiança"
+      ]
+    },
+    {
+      "text": "O que o casal deve fazer quando os desejos são diferentes?",
+      "options": [
+        "Quem tem menos desejo precisa se esforçar mais",
+        "Cada um deve respeitar o próprio desejo, sem cobranças",
+        "Os dois devem conversar e buscar um equilíbrio",
+        "A frequência é uma responsabilidade do casamento"
+      ]
+    },
+    {
+      "text": "Como deve funcionar a liderança no casamento?",
+      "options": [
+        "O marido deve ter a decisão final",
+        "Todas as decisões devem ser divididas igualmente",
+        "O marido lidera ouvindo e considerando a esposa",
+        "Quem contribui mais financeiramente deve ter mais influência"
+      ]
+    },
+    {
+      "text": "Até onde vai a privacidade no celular dentro do casamento?",
+      "options": [
+        "Tenho direito à minha privacidade, meu cônjuge não precisa ter acesso a tudo",
+        "Evito compartilhar minha senha para não gerar discussões desnecessárias",
+        "Algumas conversas são pessoais e não precisam ser compartilhadas",
+        "Deixar o celular livre é uma forma de proteger a confiança e não dar espaço para segredos"
+      ]
+    }
+  ]
+}

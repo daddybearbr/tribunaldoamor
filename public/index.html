@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#9e2512">
+<title>Tribunal do Amor — Votação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  body { min-height: 100dvh; display: flex; flex-direction: column; background: var(--cream) url("/img/fundo-celular.jpg") center / cover fixed; }
+
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: calc(10px + env(safe-area-inset-top)) 16px 10px; background: var(--wine); color: var(--paper); }
+  .brand { font-weight: 800; font-size: 20px; letter-spacing: -.03em; line-height: 1; }
+  .brand em { font-family: var(--serif); font-weight: 400; font-size: 21px; letter-spacing: -.01em; }
+  .st { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #9fe0a8; }
+  .offline .dot { background: #ffc7a8; }
+
+  main { flex: 1; display: flex; flex-direction: column; padding: 16px 16px calc(26px + env(safe-area-inset-bottom)); max-width: 560px; width: 100%; margin: 0 auto; }
+
+  .center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px; padding: 8px 4px; }
+  .hero { width: 100%; border-radius: 22px; display: block; box-shadow: 0 12px 30px rgba(58,31,21,.25); }
+  .center h1 { font-weight: 800; font-size: 32px; line-height: 1.02; letter-spacing: -.035em; margin: 6px 0 0; color: var(--ink); }
+  .center h1 em { font-family: var(--serif); font-weight: 400; color: var(--wine); }
+  .center p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.45; max-width: 30ch; }
+  .pulse { width: 64px; height: 64px; font-size: 30px; animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(.86); opacity: .7 } 50% { transform: scale(1.06); opacity: 1 } }
+
+  .case { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--wine); }
+  .qcard { background: var(--wine); color: var(--paper); border-radius: 24px; padding: 16px 18px 18px; margin-bottom: 14px; }
+  .qcard .case { color: var(--paper); opacity: .9; font-size: 21px; }
+  .qcard h2 { margin: 4px 0 0; font-weight: 800; font-size: 24px; line-height: 1.05; letter-spacing: -.03em; text-transform: uppercase; }
+
+  .timer { height: 8px; border-radius: 99px; background: rgba(58,31,21,.14); overflow: hidden; }
+  .timer > i { display: block; height: 100%; width: 100%; background: var(--wine); transform-origin: left; }
+  .timer.low > i { background: #d2441c; }
+  .secs { text-align: right; color: var(--muted); font-weight: 700; font-size: 13px; margin: 5px 0 10px; font-variant-numeric: tabular-nums; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    display: grid; grid-template-columns: 50px 1fr; align-items: center; gap: 14px; width: 100%; text-align: left;
+    background: rgba(255,246,234,.92); color: var(--ink); border: 2px solid rgba(58,31,21,.12); border-radius: 20px;
+    padding: 10px 14px 10px 10px; font-weight: 700; font-size: 17px; line-height: 1.18; letter-spacing: -.015em; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    transition: transform .08s ease, border-color .15s ease, opacity .2s ease, background .15s ease;
+  }
+  .opt .sphere { width: 50px; height: 50px; font-size: 26px; }
+  .opt:active { transform: scale(.985); }
+  .opt.chosen { border-color: var(--wine); background: var(--wine); color: var(--paper); }
+  .opt.chosen .sphere { background: var(--paper); color: var(--wine); }
+  .opt.dim { opacity: .45; }
+  .opt[disabled] { cursor: default; }
+
+  .msg { margin-top: 14px; text-align: center; min-height: 22px; font-weight: 700; font-size: 14px; line-height: 1.45; }
+  .msg.ok { color: var(--wine); }
+  .msg.err { color: #b5310f; }
+
+  /* resultado no celular */
+  .res h1 { margin: 0 0 4px; font-weight: 800; font-size: 28px; letter-spacing: -.035em; line-height: 1; }
+  .res h1 em { font-family: var(--serif); font-weight: 400; color: var(--wine); }
+  .res .sub { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+  .rrow { background: rgba(255,246,234,.92); border: 2px solid rgba(58,31,21,.1); border-radius: 18px; padding: 10px 12px; margin-bottom: 9px; }
+  .rrow .h { display: grid; grid-template-columns: 38px 1fr auto; gap: 10px; align-items: center; }
+  .rrow .sphere { width: 38px; height: 38px; font-size: 19px; }
+  .rrow .t { font-weight: 700; font-size: 15px; line-height: 1.15; letter-spacing: -.01em; }
+  .rrow .p { font-weight: 800; font-size: 24px; letter-spacing: -.04em; color: var(--wine); font-variant-numeric: tabular-nums; }
+  .rrow .bar { height: 8px; border-radius: 99px; background: rgba(58,31,21,.12); overflow: hidden; margin-top: 8px; }
+  .rrow .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #8f1f0c, #c8401a); border-radius: 99px; transition: width .8s cubic-bezier(.2,.8,.2,1); }
+  .rrow .tags { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .rrow .tags:empty { display: none; }
+  .tg { font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; background: var(--wine); color: var(--paper); }
+  .tg.me { background: transparent; color: var(--wine); border: 1.5px solid var(--wine); }
+  .rrow.win { border-color: var(--wine); }
+  .res .foot { text-align: center; color: var(--muted); font-size: 13px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">Tribunal <em>do amor</em></div>
+  <span class="st" id="status"><span class="dot"></span><span id="statusText">conectado</span></span>
+</div>
+
+<main id="main">
+  <div class="center" id="boot"><div class="pulse sphere">A</div><p>Conectando…</p></div>
+</main>
+
+<script src="/common.js"></script>
+<script>
+(function () {
+  'use strict';
+  var voterId = Live.getVoterId();
+  var main = document.getElementById('main');
+  var statusEl = document.getElementById('status');
+  var statusText = document.getElementById('statusText');
+
+  var cur = null;        // último estado
+  var myVote = null;     // opção escolhida na pergunta atual
+  var pending = false;   // voto em envio
+  var shownKey = '';     // evita redesenhar à toa
+  var timerBar, secsEl, msgEl, optEls = [];
+  var raf = 0;
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function letter(i) { return String.fromCharCode(65 + i); }
+  function richTitle(h, plain, italic) {
+    h.appendChild(document.createTextNode(plain + ' '));
+    h.appendChild(el('em', null, italic));
+    return h;
+  }
+
+  function center(opts) {
+    main.innerHTML = '';
+    var box = el('div', 'center');
+    if (opts.hero) { var img = el('img', 'hero'); img.src = '/img/capa-celular.jpg'; img.alt = 'Tribunal do Amor'; box.appendChild(img); }
+    if (opts.pulse) box.appendChild(el('div', 'pulse sphere', opts.pulse));
+    if (opts.caseLabel) box.appendChild(el('div', 'case', opts.caseLabel));
+    if (opts.h1) box.appendChild(richTitle(el('h1'), opts.h1[0], opts.h1[1]));
+    if (opts.title) box.appendChild(el('h1', null, opts.title));
+    if (opts.text) box.appendChild(el('p', null, opts.text));
+    main.appendChild(box);
+    return box;
+  }
+
+  function qcard(s) {
+    var c = el('div', 'qcard');
+    c.appendChild(el('div', 'case', 'Caso ' + (s.index + 1) + ' de ' + s.total));
+    c.appendChild(el('h2', null, Live.clean(s.question.text)));
+    return c;
+  }
+
+  function renderVoting(s) {
+    main.innerHTML = '';
+    main.appendChild(qcard(s));
+
+    var timer = el('div', 'timer');
+    timer.appendChild(document.createElement('i'));
+    timerBar = timer;
+    main.appendChild(timer);
+    secsEl = el('div', 'secs', '');
+    main.appendChild(secsEl);
+
+    var list = el('div', 'options');
+    optEls = s.question.options.map(function (text, i) {
+      var b = el('button', 'opt');
+      b.type = 'button';
+      b.appendChild(el('span', 'sphere', letter(i)));
+      b.appendChild(el('span', null, Live.clean(text)));
+      b.addEventListener('click', function () { vote(i); });
+      list.appendChild(b);
+      return b;
+    });
+    main.appendChild(list);
+    msgEl = el('div', 'msg');
+    main.appendChild(msgEl);
+    paintChoice();
+    tick();
+  }
+
+  function paintChoice() {
+    optEls.forEach(function (b, i) {
+      var chosen = myVote === i;
+      b.classList.toggle('chosen', chosen);
+      b.classList.toggle('dim', myVote !== null && !chosen);
+      b.disabled = myVote !== null || pending;
+    });
+    if (msgEl && myVote !== null) {
+      msgEl.className = 'msg ok';
+      msgEl.textContent = 'Voto registrado em ' + letter(myVote) + '. Acompanhe o resultado no telão.';
+    }
+  }
+
+  function vote(i) {
+    if (!cur || cur.phase !== 'voting' || myVote !== null || pending) return;
+    pending = true;
+    optEls.forEach(function (b) { b.disabled = true; });
+    msgEl.className = 'msg'; msgEl.textContent = 'Enviando…';
+    if (navigator.vibrate) { try { navigator.vibrate(25); } catch (e) {} }
+    fetch('/api/vote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ voterId: voterId, qIndex: cur.index, option: i }),
+    }).then(function (r) { return r.json(); }).then(function (r) {
+      pending = false;
+      if (r.ok) { myVote = r.option; }
+      else if (typeof r.option === 'number') { myVote = r.option; }
+      else {
+        optEls.forEach(function (b) { b.disabled = false; });
+        msgEl.className = 'msg err'; msgEl.textContent = r.error || 'Não foi possível votar.';
+        return;
+      }
+      paintChoice();
+    }).catch(function () {
+      pending = false;
+      optEls.forEach(function (b) { b.disabled = false; });
+      msgEl.className = 'msg err'; msgEl.textContent = 'Sem conexão. Toque de novo para tentar.';
+    });
+  }
+
+  function tick() {
+    cancelAnimationFrame(raf);
+    if (!cur || cur.phase !== 'voting' || !timerBar) return;
+    var left = cur.endsAt - Live.serverNow();
+    var total = cur.voteSeconds * 1000;
+    var frac = Math.max(0, Math.min(1, left / total));
+    timerBar.firstChild.style.transform = 'scaleX(' + frac + ')';
+    timerBar.classList.toggle('low', left < 8000);
+    secsEl.textContent = Live.fmtSeconds(left) + 's';
+    if (left <= 0) {
+      optEls.forEach(function (b) { b.disabled = true; });
+      if (myVote === null) { msgEl.className = 'msg err'; msgEl.textContent = 'Tempo esgotado.'; }
+      return;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  // Depois de encerrada: percentual de cada opção, com a mais votada e o voto da pessoa marcados.
+  function renderClosed(s) {
+    var r = s.result || { counts: [], total: 0, winners: [] };
+    main.innerHTML = '';
+    var box = el('div', 'res');
+    box.appendChild(el('div', 'case', 'Caso ' + (s.index + 1) + ' de ' + s.total));
+    box.appendChild(richTitle(el('h1'), 'Veredito', 'do público'));
+    box.appendChild(el('div', 'sub', Live.clean(s.question.text)));
+    var fills = [];
+    s.question.options.forEach(function (text, i) {
+      var c = r.counts[i] || 0;
+      var p = r.total ? Math.round((c / r.total) * 100) : 0;
+      var isTop = r.winners.indexOf(i) >= 0;
+      var row = el('div', 'rrow' + (isTop ? ' win' : ''));
+      var h = el('div', 'h');
+      h.appendChild(el('span', 'sphere', letter(i)));
+      h.appendChild(el('div', 't', Live.clean(text)));
+      h.appendChild(el('div', 'p', p + '%'));
+      row.appendChild(h);
+      var bar = el('div', 'bar'); var f = el('i'); bar.appendChild(f); row.appendChild(bar);
+      fills.push([f, p]);
+      var tags = el('div', 'tags');
+      if (isTop) tags.appendChild(el('span', 'tg', r.winners.length > 1 ? '★ Empate' : '★ Mais votada'));
+      if (myVote === i) tags.appendChild(el('span', 'tg me', 'Seu voto'));
+      row.appendChild(tags);
+      box.appendChild(row);
+    });
+    box.appendChild(el('div', 'foot', myVote === null
+      ? 'Você não votou neste caso · ' + r.total + (r.total === 1 ? ' voto' : ' votos')
+      : 'Obrigado por votar! · ' + r.total + (r.total === 1 ? ' voto' : ' votos')));
+    main.appendChild(box);
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { fills.forEach(function (x) { x[0].style.width = x[1] + '%'; }); });
+    });
+  }
+
+  function render(s) {
+    var key = [s.phase, s.index, s.endsAt].join('|');
+    if (s.phase === 'voting') {
+      if (shownKey !== key) { shownKey = key; renderVoting(s); }
+      else paintChoice();
+      return;
+    }
+    if (shownKey === key && s.phase !== 'closed') return;
+    shownKey = key;
+    cancelAnimationFrame(raf);
+    switch (s.phase) {
+      case 'lobby':
+        center({ hero: true, h1: ['Você está', 'dentro!'], text: 'O julgamento começa em instantes. Deixe esta tela aberta.' });
+        break;
+      case 'ready':
+        center({ pulse: '♥', caseLabel: 'Caso ' + (s.index + 1) + ' de ' + s.total, title: Live.clean(s.question.text), text: 'Ouça o caso. A votação abre aqui em instantes.' });
+        break;
+      case 'closed':
+        renderClosed(s);
+        break;
+      case 'finished':
+        center({ hero: true, h1: ['Caso', 'encerrado!'], text: 'Obrigado por participar do Tribunal do Amor.' });
+        break;
+    }
+  }
+
+  Live.connect('vote', {
+    voterId: voterId,
+    onStatus: function (ok) {
+      statusEl.classList.toggle('offline', !ok);
+      statusText.textContent = ok ? 'conectado' : 'reconectando…';
+    },
+    onState: function (s) {
+      var changedQ = !cur || cur.index !== s.index;
+      cur = s;
+      if (changedQ) { myVote = s.myVote; pending = false; }
+      else if (s.myVote !== null && s.myVote !== undefined) myVote = s.myVote;
+      else if (s.phase === 'ready') myVote = null; // pergunta refeita
+      render(s);
+    },
+  });
+})();
+</script>
+</body>
+</html>

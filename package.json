@@ -1,0 +1,15 @@
+{
+  "name": "tribunal-do-amor",
+  "version": "1.0.0",
+  "description": "Tribunal do Amor — votação em tempo real com QR Code, cronômetro e telão. Sem dependências.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/load.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
